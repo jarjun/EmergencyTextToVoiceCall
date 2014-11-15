@@ -2,6 +2,7 @@ from flask import render_template
 from app import app
 import requests
 from twilio.rest import TwilioRestClient
+import twilio.twiml
 '''
 @app.route('/')
 def default():
@@ -47,9 +48,16 @@ def default():
 	account_sid = "ACed174aa4db08574d608df749cd16e3fd"
 	auth_token  = "d96a5e6b2722cac3116e0298c965efd0"
 	client = TwilioRestClient(account_sid, auth_token)
+	toGet = request.values.get('Body',None)
+	resp = twilio.twiml.Response()
+	message = "dinkey"
+	resp.message(message)
+	return str(resp)
+	'''
 	messages = client.messages.list()
 	body = messages[0].body
 	num = messages[0].from_
 	return render_template("rootpage.html", message = body, fromNumber = num)
+	'''
 
 
