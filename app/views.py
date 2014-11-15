@@ -48,9 +48,9 @@ def default():
 	account_sid = "ACed174aa4db08574d608df749cd16e3fd"
 	auth_token  = "d96a5e6b2722cac3116e0298c965efd0"
 	client = TwilioRestClient(account_sid, auth_token)
-	toGet = request.values.get('From',None)
+	toGet = request.values.get('Body',None)
 	resp = twilio.twiml.Response()
-	message = toGet
+	message = client.messages.create(to="+17572823575",body=toGet)
 	resp.message(message)
 	return str(resp)
 	'''
