@@ -48,6 +48,8 @@ def default():
 	auth_token  = "d96a5e6b2722cac3116e0298c965efd0"
 	client = TwilioRestClient(account_sid, auth_token)
 	messages = client.messages.list()
-	return render_template("rootpage.html", check = messages[0].body)
+	body = messages[0].body
+	num = messages[0].from_
+	return render_template("rootpage.html", message = body, fromNumber = num)
 
 
