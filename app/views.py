@@ -53,6 +53,7 @@ def submitted():
 @app.route('/', methods=['GET', 'POST'])
 def form():
 	ip = request.remote_addr
+	return ip
 	form = RequestForm()
 	if form.validate_on_submit():
 		inputText = form.inputText.data
