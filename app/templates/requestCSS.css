@@ -1,7 +1,18 @@
+body{
+	background: url("http://www.webdesign.org/img_articles/20168/gradient.jpg");
+}
+
 h1{
-	color: blue;
+	color: red;
+}
+p{
+	color: white;
 }
 #main{
 	position: relative;
-	left: 45%;
+	left: 40%;
+}
+#sub{
+	width: 200px;
+	height: 100px;
 }
