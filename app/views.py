@@ -55,6 +55,7 @@ def createTwiML(message):
 
 
 
+
 def distance(lat1, lng1, lat2, lng2):
     """
         Calculates distance in miles between two lat, long pairs
@@ -91,6 +92,19 @@ def geocode(loc):
     #print loc + ": " + latLong
     return latLong
 
+def extractAddress(message):
+    url = "https://extract-beta.api.smartystreets.com/"
+    
+    query_params = {
+                    "auth-id" : "6e1411df-8d1e-4928-93c2-a690e3176b84",
+                    "auth-token" : "TKhLiK6xt76gfTGAQRi3",
+                    "input": message
+                   }
+    
+    response = requests.get(url, params = query_params)
+    addressData = response.json()
+    #print addressData
+
 
 def findClosestPSAP(location):
     try:
@@ -105,6 +119,7 @@ def findClosestPSAP(location):
     lines = f.readlines()
     bestDist = sys.maxint
     bestPSAP = ""
+    PSAPAddress = ""
     
     for line in lines:
         lines = line.split(",")
@@ -112,7 +127,8 @@ def findClosestPSAP(location):
         if curDist < bestDist:
             bestDist = curDist
             bestPSAP = lines[0]
+            PSAPAddress = lines[1] + ", " + lines[4] + ", " + lines[2]
     
-    return bestPSAP
+    return bestPSAP + "; " + PSAPAddress
 
 
