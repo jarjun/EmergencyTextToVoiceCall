@@ -140,4 +140,12 @@ def findClosestPSAP(location):
     
     return bestPSAP + "; " + PSAPAddress
 
+def determineToCall(PSAPNumber):
+    f = open("PhoneData copy.txt")
+    lines = f.readlines()
 
+    for line in lines:
+        l = line.split(",")
+        if l[0].strip("\n") == PSAPNumber:
+            return l[1].strip()
+    return "+19732162024"
