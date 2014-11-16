@@ -3,15 +3,18 @@
 <!-- extend from base layout -->
 {% extends "base.html" %}
 
+
 {% block content %}
+<div id = "main">
   <h1><b>Contact 911</b></h1>
   <form placeholder="Address" action="" method="post" name="address">
       {{ form.hidden_tag() }}
       <p>
           Please enter your location and situation:<br>
-          {{ form.inputText(size=80) }}<br>
+          {{ form.inputText(size=300) }}<br>
       </p>
 
       <p><input type="submit" value="Submit"></p>
   </form>
+ </div>
 {% endblock %}

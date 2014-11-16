@@ -7,6 +7,7 @@ import twilio.twiml
 import urllib
 import math
 import sys
+import urllib2
 
 '''
 @author Arjun Jain
@@ -20,12 +21,22 @@ auth_token  = "d96a5e6b2722cac3116e0298c965efd0"
 client = TwilioRestClient(account_sid, auth_token)
 BASE_URL = "https://emergencytexttovoice.herokuapp.com/"
 
-def makeCall(inputText):
+def makeCall(inputText, ip):
 	extractedAddress = extractAddress(inputText)
 	if extractedAddress != "No address":
 	 	location = findClosestPSAP(extractedAddress)
 	else:
-		location = "No valid address was found"
+		location = "No valid address found"
+	modifiedText = urllib.quote("P S A P Location is. " + location + "." + "Your Message is. " + inputText)
+	urlToMake = BASE_URL + "call/" + modifiedText
+	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
+
+def makeCallText(inputText):
+	extractedAddress = extractAddress(inputText)
+	if extractedAddress != "No address":
+	 	location = findClosestPSAP(extractedAddress)
+	else:
+		location = "No valid address found"
 	modifiedText = urllib.quote("P S A P Location is. " + location + "." + "Your Message is. " + inputText)
 	urlToMake = BASE_URL + "call/" + modifiedText
 	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
@@ -33,7 +44,7 @@ def makeCall(inputText):
 @app.route('/sms', methods=['GET', 'POST'])
 def default():
 	inputText = request.values.get('Body',None)
-	makeCall(inputText)
+	makeCallText(inputText)
 	return ""
 
 @app.route('/submitted', methods=['GET', 'POST'])
@@ -45,7 +56,7 @@ def form():
 	form = RequestForm()
 	if form.validate_on_submit():
 		inputText = form.inputText.data
-		makeCall(inputText)
+		makeCall(inputText, ip)
 		return redirect("/submitted")
 	return render_template('request.html',
 							title= 'Request',
@@ -140,10 +151,10 @@ def findClosestPSAP(location):
     
     return bestPSAP + "; " + PSAPAddress
 
+
 def determineToCall(PSAPNumber):
     f = open("PhoneData copy.txt")
     lines = f.readlines()
-
     for line in lines:
         l = line.split(",")
         if l[0].strip("\n") == PSAPNumber:
