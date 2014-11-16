@@ -8,9 +8,25 @@
   <form placeholder="Address" action="" method="post" name="address">
       {{ form.hidden_tag() }}
       <p>
-          Enter your address:<br>
-          {{ form.address(size=80) }}<br>
+          Enter your street:<br>
+          {{ form.street(size=80) }}<br>
       </p>
+      
+      <p>
+          Enter your state:<br>
+          {{ form.state(size=80) }}<br>
+      </p>
+
+      <p>
+          Enter your Zipcode:<br>
+          {{ form.zipCode(size=80) }}<br>
+      </p>
+
+      <p>
+          Enter your situation:<br>
+          {{ form.desc(size=80) }}<br>
+      </p>
+
       <p><input type="submit" value="Submit"></p>
   </form>
 {% endblock %}
