@@ -32,10 +32,10 @@ def form():
 	return render_template('request.html',
 							title= 'Request',
 							form= form)
-@app.route('/<message>', methods=['GET', 'POST'])
+@app.route('/call/<message>', methods=['GET', 'POST'])
 def createTwiML(message):
 	resp = twilio.twiml.Response()
-	resp.say()
+	resp.say(message)
 	return str(resp)
 
 
