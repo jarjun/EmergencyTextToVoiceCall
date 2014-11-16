@@ -52,7 +52,7 @@ def submitted():
 
 @app.route('/', methods=['GET', 'POST'])
 def form():
-	ip = request.environ['REMOTE_ADDR']
+	ip = request.headers.get('X-Real-IP')
 	return ip
 	form = RequestForm()
 	if form.validate_on_submit():
