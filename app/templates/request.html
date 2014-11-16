@@ -4,27 +4,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1><b>Information</b></h1>
+  <h1><b>Contact 911</b></h1>
   <form placeholder="Address" action="" method="post" name="address">
       {{ form.hidden_tag() }}
       <p>
-          Enter your street:<br>
-          {{ form.street(size=80) }}<br>
-      </p>
-      
-      <p>
-          Enter your state:<br>
-          {{ form.state(size=80) }}<br>
-      </p>
-
-      <p>
-          Enter your Zipcode:<br>
-          {{ form.zipCode(size=80) }}<br>
-      </p>
-
-      <p>
-          Enter your situation:<br>
-          {{ form.desc(size=80) }}<br>
+          Please enter your location and situation:<br>
+          {{ form.textInput(size=80) }}<br>
       </p>
 
       <p><input type="submit" value="Submit"></p>
