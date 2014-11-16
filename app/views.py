@@ -30,7 +30,7 @@ def makeCall(inputText, ip):
 	urlToMake = BASE_URL + "call/" + modifiedText
 	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
 
-def makeCall(inputText):
+def makeCallText(inputText):
 	extractedAddress = extractAddress(inputText)
 	if extractedAddress != "No address":
 	 	location = findClosestPSAP(extractedAddress)
@@ -43,7 +43,7 @@ def makeCall(inputText):
 @app.route('/sms', methods=['GET', 'POST'])
 def default():
 	inputText = request.values.get('Body',None)
-	makeCall(inputText)
+	makeCallText(inputText)
 	return ""
 
 @app.route('/submitted', methods=['GET', 'POST'])
