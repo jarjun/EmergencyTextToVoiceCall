@@ -105,10 +105,15 @@ def extractAddress(message):
     
     response = requests.get(url, params = query_params)
     addressData = response.json()
-    return addressData["addresses"][0]["text"]
-
+    try:
+    	address = addressData["addresses"][0]["text"]
+    except:
+    	address = "No address"
+    return address
 
 def findClosestPSAP(location):
+	if location == "No address":
+		return "No address"
     try:
         latLong = geocode(location).split(",")
     except:
