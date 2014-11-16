@@ -8,12 +8,13 @@ import twilio.twiml
 account_sid = "ACed174aa4db08574d608df749cd16e3fd"
 auth_token  = "d96a5e6b2722cac3116e0298c965efd0"
 client = TwilioRestClient(account_sid, auth_token)
+BASE_URL = "https://emergencytexttovoice.herokuapp.com/"
 
 @app.route('/sms', methods=['GET', 'POST'])
 def default():
 	toGet = request.values.get('Body',None)
 	resp = twilio.twiml.Response()
-	message = client.calls.create(url = "http://demo.twilio.com/docs/voice.xml" , to="+17572823575", from_ = "+12039874014",body=toGet)
+	client.calls.create(url = BASE_URL + toGet , to="+17572823575", from_ = "+12039874014",body=toGet)
 	return str(resp)
 
 @app.route('/submitted', methods=['GET', 'POST'])
@@ -31,5 +32,10 @@ def form():
 	return render_template('request.html',
 							title= 'Request',
 							form= form)
+@app.route('/<message>', methods=['GET', 'POST'])
+def createTwiML(message):
+	resp = twilio.twiml.Response()
+	resp.say()
+	return str(resp)
 
 
