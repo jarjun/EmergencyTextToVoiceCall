@@ -1,7 +1,7 @@
 <!-- The HTML file for the web form. Authors: Chris Bernt, Greg Lyons, Wesley Valentine, Arjun Jain -->
 
 <head>
-	<link rel="stylesheet" type="text/css" href="requestCSS.css">
+	<link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='requestCSS.css') }}">
 </head>
 <!-- extend from base layout -->
 {% extends "base.html" %}
@@ -16,7 +16,7 @@
           Please enter your location and describe your emergency:<br>
           {{ form.inputText(size=300) }}<br>
       </p>
-      
+
       <p><input type="submit" value="Submit" id = "sub"></p>
   </form>
  </div>
