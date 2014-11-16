@@ -1,0 +1,10 @@
+#!path/to/virtual_environment_dir/bin/python
+# This script was created by egginst when installing:
+#
+#   enstaller-4.6.3.dev1-107.egg
+#
+if __name__ == '__main__':
+    import sys
+    from egginst.main import main
+
+    sys.exit(main())

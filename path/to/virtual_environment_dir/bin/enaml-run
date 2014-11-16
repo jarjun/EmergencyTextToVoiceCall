@@ -1,0 +1,10 @@
+#!path/to/virtual_environment_dir/bin/python
+# This script was created by egginst when installing:
+#
+#   enaml-0.6.8-3.egg
+#
+if __name__ == '__main__':
+    import sys
+    from enaml.runner import main
+
+    sys.exit(main())

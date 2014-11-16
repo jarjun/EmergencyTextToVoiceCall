@@ -1,0 +1,10 @@
+#!path/to/virtual_environment_dir/bin/python
+# This script was created by egginst when installing:
+#
+#   sympy-0.7.2-1.egg
+#
+if __name__ == '__main__':
+    import sys
+    from sympy.isympy import main
+
+    sys.exit(main())

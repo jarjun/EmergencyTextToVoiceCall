@@ -1,0 +1,10 @@
+#!path/to/virtual_environment_dir/bin/python
+# This script was created by egginst when installing:
+#
+#   nose-1.2.1-1.egg
+#
+if __name__ == '__main__':
+    import sys
+    from nose import run_exit
+
+    sys.exit(run_exit())

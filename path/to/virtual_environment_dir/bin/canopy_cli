@@ -1,0 +1,7 @@
+#!/Applications/Canopy.app/Contents/MacOS/python
+import sys
+profile = ""
+if '--profile' not in ' '.join(sys.argv):
+    sys.argv.insert(1, '--profile=%s'%profile)
+ns = dict(__file__=r"/Applications/Canopy.app/Contents/MacOS/__boot__.py")
+execfile(r"/Applications/Canopy.app/Contents/MacOS/__boot__.py", ns)

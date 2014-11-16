@@ -1,0 +1,5 @@
+#!/Users/Chris/Documents/workspace_Python/EmergencyTextToVoiceCall/path/to/virtual_environment_dir/bin/python
+if __name__ == '__main__':
+    import sys, pydoc
+    sys.exit(pydoc.cli())
+

@@ -1,0 +1,9 @@
+#!/Applications/Canopy.app/Contents/MacOS/python
+import sys
+from posix import execv
+profile = ""
+args = sys.argv[1:]
+if '--profile' not in ' '.join(args):
+    args.insert(0, '--profile=%s'%profile)
+command = ['/usr/bin/open', '-n', '/Applications/Canopy.app', '--args'] + args
+execv(command[0], command)
