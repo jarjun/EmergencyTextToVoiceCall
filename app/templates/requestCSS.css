@@ -1,10 +1,10 @@
 body{
 	background: url("http://www.webdesign.org/img_articles/20168/gradient.jpg");
-
+	max-width: 100%;
+	
 }
 
 html, body{
-	max-width: 100%;
 	overflow-x: hidden;
 }
 
