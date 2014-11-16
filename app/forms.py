@@ -1,6 +1,6 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, BooleanField
+from wtforms import TextAreaField
 from wtforms.validators import DataRequired
 
 class RequestForm(Form):
-	address = StringField('address', validators=[DataRequired()])
+	inputText = TextAreaField('inputText', validators=[DataRequired()])

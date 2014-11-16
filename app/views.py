@@ -40,7 +40,7 @@ def submitted():
 def form():
 	form = RequestForm()
 	if form.validate_on_submit():
-		inputText = form.address.data
+		inputText = form.inputText.data
 		makeCall(inputText)
 		return redirect("/submitted")
 	return render_template('request.html',
