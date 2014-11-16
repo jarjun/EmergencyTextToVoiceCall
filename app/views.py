@@ -6,7 +6,6 @@ from twilio.rest import TwilioRestClient
 import twilio.twiml
 import urllib
 import math
-import requests
 import sys
 
 '''
@@ -21,12 +20,16 @@ auth_token  = "d96a5e6b2722cac3116e0298c965efd0"
 client = TwilioRestClient(account_sid, auth_token)
 BASE_URL = "https://emergencytexttovoice.herokuapp.com/"
 
+def makeCall(inputText):
+	location = findClosestPSAP(extractAddress(inputText))
+	modifiedText = urllib.quote("P S A P Location is. " + location + "." + "Your Message is. " + inputText)
+	urlToMake = BASE_URL + "call/" + modifiedText
+	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
+
 @app.route('/sms', methods=['GET', 'POST'])
 def default():
 	inputText = request.values.get('Body',None)
-	modifiedText = urllib.quote(inputText)
-	urlToMake = BASE_URL + "call/" + modifiedText
-	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
+	makeCall(inputText)
 	return ""
 
 @app.route('/submitted', methods=['GET', 'POST'])
@@ -37,11 +40,8 @@ def submitted():
 def form():
 	form = RequestForm()
 	if form.validate_on_submit():
-		#flash(form.address.data)
 		inputText = form.address.data
-		modifiedText = urllib.quote(inputText)
-		urlToMake = BASE_URL + "call/" + modifiedText
-		client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
+		makeCall(inputText)
 		return redirect("/submitted")
 	return render_template('request.html',
 							title= 'Request',
@@ -50,11 +50,13 @@ def form():
 def createTwiML(message):
 	resp = twilio.twiml.Response()
 	resp.say(message)
+	fixedMessage = urllib.quote(message)
+	resp.gather(numDigits=1, action=BASE_URL + "call/" + fixedMessage, method="POST").say("To repeat this message press any key")
+	'''
+	with resp.gather(numDigits=1, action=BASE_URL + "call/" + message, method="POST") as g:
+        g.say("To repeat this message press any key")
+    '''
 	return str(resp)
-
-
-
-
 
 def distance(lat1, lng1, lat2, lng2):
     """
@@ -103,7 +105,7 @@ def extractAddress(message):
     
     response = requests.get(url, params = query_params)
     addressData = response.json()
-    #print addressData
+    return addressData["addresses"][0]["text"]
 
 
 def findClosestPSAP(location):
