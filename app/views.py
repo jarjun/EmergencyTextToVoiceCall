@@ -4,7 +4,7 @@ from .forms import RequestForm
 import requests
 from twilio.rest import TwilioRestClient
 import twilio.twiml
-import werkzeug
+import urllib
 
 account_sid = "ACed174aa4db08574d608df749cd16e3fd"
 auth_token  = "d96a5e6b2722cac3116e0298c965efd0"
@@ -15,12 +15,9 @@ BASE_URL = "https://emergencytexttovoice.herokuapp.com/"
 def default():
 	inputText = request.values.get('Body',None)
 	urlToMake = BASE_URL + "call/" + inputText
-	urlToMake = url_fix(urlToMake)
-	print urlToMake
-	resp = twilio.twiml.Response()
-	resp.say(inputText)
+	urlToMake = urllib.quote(urlToMake)
 	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
-	return str(resp)
+	return ""
 
 @app.route('/submitted', methods=['GET', 'POST'])
 def submitted():
