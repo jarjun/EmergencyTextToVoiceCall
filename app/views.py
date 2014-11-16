@@ -7,6 +7,7 @@ import twilio.twiml
 import urllib
 import math
 import sys
+import urllib2
 
 '''
 @author Arjun Jain
@@ -52,7 +53,7 @@ def submitted():
 
 @app.route('/', methods=['GET', 'POST'])
 def form():
-	ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)	
+	ip = urllib2.urlopen('http://ip.42.pl/raw').read()	
 	return ip
 	form = RequestForm()
 	if form.validate_on_submit():
