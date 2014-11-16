@@ -58,6 +58,11 @@ def default():
 @app.route('/form', methods=['GET', 'POST'])
 def form():
 	form = RequestForm()
+	if form.validate_on_submit():
+		#flash(form.address.data)
+
+		#SEND MESSAGE HERE
+
 	return render_template('request.html',
 							title= 'Request',
 							form= form)
