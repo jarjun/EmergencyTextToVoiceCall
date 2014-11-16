@@ -14,7 +14,7 @@ BASE_URL = "https://emergencytexttovoice.herokuapp.com/"
 def default():
 	toGet = request.values.get('Body',None)
 	resp = twilio.twiml.Response()
-	client.calls.create(url = BASE_URL + toGet , to="+17572823575", from_ = "+12039874014",body=toGet)
+	client.calls.create(url = BASE_URL + "call/" + toGet , to="+17572823575", from_ = "+12039874014",body=toGet)
 	return str(resp)
 
 @app.route('/submitted', methods=['GET', 'POST'])
