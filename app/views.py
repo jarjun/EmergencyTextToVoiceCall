@@ -23,7 +23,7 @@ def form():
 	if form.validate_on_submit():
 		#flash(form.address.data)
 		resp = twilio.twiml.Response()
-		message = client.messages.create(to="+17572823575", from_ = "+12039874014",body=form.address.data)
+		client.messages.create(to="+17572823575", from_ = "+12039874014",body=form.address.data)
 		#resp.message(message)
 	return render_template('request.html',
 							title= 'Request',
