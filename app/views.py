@@ -6,7 +6,6 @@ from twilio.rest import TwilioRestClient
 import twilio.twiml
 import urllib
 import math
-import requests
 import sys
 
 '''
@@ -25,7 +24,7 @@ BASE_URL = "https://emergencytexttovoice.herokuapp.com/"
 def default():
 	inputText = request.values.get('Body',None)
 	location = findClosestPSAP(extractAddress(inputText))
-	modifiedText = urllib.quote("P SAP Location is " + location + "." + "Your Message is " + inputText)
+	modifiedText = urllib.quote("P S A P Location is. " + location + "." + "Your Message is. " + inputText)
 	urlToMake = BASE_URL + "call/" + modifiedText
 	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
 	return ""
@@ -38,10 +37,9 @@ def submitted():
 def form():
 	form = RequestForm()
 	if form.validate_on_submit():
-		#flash(form.address.data)
 		inputText = form.address.data
 		location = findClosestPSAP(extractAddress(inputText))
-		modifiedText = urllib.quote("P SAP Location is " + location + "." + "Your Message is " + inputText)
+		modifiedText = urllib.quote("P S A P Location is. " + location + "." + "Your Message is. " + inputText)
 		urlToMake = BASE_URL + "call/" + modifiedText
 		client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
 		return redirect("/submitted")
@@ -52,11 +50,9 @@ def form():
 def createTwiML(message):
 	resp = twilio.twiml.Response()
 	resp.say(message)
+	with resp.gather(numDigits=1, action= BASE_URL + "/call/" + message, method="POST") as g:
+        g.say("To repeat this message press any key")
 	return str(resp)
-
-
-
-
 
 def distance(lat1, lng1, lat2, lng2):
     """
