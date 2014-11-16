@@ -14,8 +14,8 @@ BASE_URL = "https://emergencytexttovoice.herokuapp.com/"
 @app.route('/sms', methods=['GET', 'POST'])
 def default():
 	inputText = request.values.get('Body',None)
-	urlToMake = BASE_URL + "call/" + inputText
-	urlToMake = urllib.quote(urlToMake)
+	modifiedText = urllib.quote(inputText)
+	urlToMake = BASE_URL + "call/" + modifiedText
 	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
 	return ""
 
