@@ -1,5 +1,6 @@
-from flask import render_template, Flask, request, redirect
+from flask import render_template, Flask, request, redirect, flash
 from app import app
+from .forms import RequestForm
 import requests
 from twilio.rest import TwilioRestClient
 import twilio.twiml
@@ -53,6 +54,13 @@ def default():
 	message = toGet
 	resp.message(message)
 	return str(resp)
+
+@app.route('/form', methods=['GET', 'POST'])
+def form():
+	form = RequestForm()
+	return render_template('request.html',
+							title= 'Request',
+							form= form)
 	'''
 	messages = client.messages.list()
 	body = messages[0].body

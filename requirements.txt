@@ -1,12 +1,14 @@
 Flask==0.10.1
+Flask-WTF==0.10.2
 Jinja2==2.7.3
 MarkupSafe==0.23
+WTForms==2.0.1
 Werkzeug==0.9.6
-gunicorn==19.1.0
+gunicorn==19.1.1
 httplib2==0.9
 itsdangerous==0.24
-requests==2.3.0
-simplejson==3.6.0
+requests==2.4.3
+simplejson==3.6.5
 six==1.8.0
 twilio==3.6.10
 wsgiref==0.1.2
