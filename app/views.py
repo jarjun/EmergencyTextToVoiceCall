@@ -20,13 +20,16 @@ auth_token  = "d96a5e6b2722cac3116e0298c965efd0"
 client = TwilioRestClient(account_sid, auth_token)
 BASE_URL = "https://emergencytexttovoice.herokuapp.com/"
 
-@app.route('/sms', methods=['GET', 'POST'])
-def default():
-	inputText = request.values.get('Body',None)
+def makeCall(inputText):
 	location = findClosestPSAP(extractAddress(inputText))
 	modifiedText = urllib.quote("P S A P Location is. " + location + "." + "Your Message is. " + inputText)
 	urlToMake = BASE_URL + "call/" + modifiedText
 	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
+
+@app.route('/sms', methods=['GET', 'POST'])
+def default():
+	inputText = request.values.get('Body',None)
+	makeCall(inputText)
 	return ""
 
 @app.route('/submitted', methods=['GET', 'POST'])
@@ -38,10 +41,7 @@ def form():
 	form = RequestForm()
 	if form.validate_on_submit():
 		inputText = form.address.data
-		location = findClosestPSAP(extractAddress(inputText))
-		modifiedText = urllib.quote("P S A P Location is. " + location + "." + "Your Message is. " + inputText)
-		urlToMake = BASE_URL + "call/" + modifiedText
-		client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
+		makeCall(inputText)
 		return redirect("/submitted")
 	return render_template('request.html',
 							title= 'Request',
