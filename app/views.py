@@ -50,7 +50,8 @@ def form():
 def createTwiML(message):
 	resp = twilio.twiml.Response()
 	resp.say(message)
-	resp.gather(numDigits=1, action=BASE_URL + "call/" + message, method="POST").say("To repeat this message press any key")
+	fixedMessage = urllib.quote(message)
+	resp.gather(numDigits=1, action=BASE_URL + "call/" + fixedMessage, method="POST").say("To repeat this message press any key")
 	'''
 	with resp.gather(numDigits=1, action=BASE_URL + "call/" + message, method="POST") as g:
         g.say("To repeat this message press any key")
