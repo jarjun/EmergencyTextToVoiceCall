@@ -22,6 +22,14 @@ BASE_URL = "https://emergencytexttovoice.herokuapp.com/"
 
 def makeCall(inputText):
 	location = findClosestPSAP(extractAddress(inputText))
+	if location == False:
+		return False
+	modifiedText = urllib.quote("P S A P Location is. " + location + "." + "Your Message is. " + inputText)
+	urlToMake = BASE_URL + "call/" + modifiedText
+	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
+
+def makeIPCall(inputText, ipLoc):
+	location = findClosestPSAP(extractAddress(ipLoc))
 	modifiedText = urllib.quote("P S A P Location is. " + location + "." + "Your Message is. " + inputText)
 	urlToMake = BASE_URL + "call/" + modifiedText
 	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
@@ -29,7 +37,10 @@ def makeCall(inputText):
 @app.route('/sms', methods=['GET', 'POST'])
 def default():
 	inputText = request.values.get('Body',None)
-	makeCall(inputText)
+	if makeCall(inputText) == False:
+		resp = twilio.twiml.Response()
+    	resp.message("Please try again with a valid address")
+    	return str(resp)
 	return ""
 
 @app.route('/submitted', methods=['GET', 'POST'])
@@ -38,10 +49,13 @@ def submitted():
 
 @app.route('/', methods=['GET', 'POST'])
 def form():
+	ip = request.environ['REMOTE_ADDR']
+	loc = locationFromIP(ip)
 	form = RequestForm()
 	if form.validate_on_submit():
 		inputText = form.address.data
-		makeCall(inputText)
+		if makeCall(inputText) == False:
+			makeIPCall(inputText, loc)
 		return redirect("/submitted")
 	return render_template('request.html',
 							title= 'Request',
@@ -52,10 +66,6 @@ def createTwiML(message):
 	resp.say(message)
 	fixedMessage = urllib.quote(message)
 	resp.gather(numDigits=1, action=BASE_URL + "call/" + fixedMessage, method="POST").say("To repeat this message press any key")
-	'''
-	with resp.gather(numDigits=1, action=BASE_URL + "call/" + message, method="POST") as g:
-        g.say("To repeat this message press any key")
-    '''
 	return str(resp)
 
 def distance(lat1, lng1, lat2, lng2):
@@ -105,14 +115,19 @@ def extractAddress(message):
     
     response = requests.get(url, params = query_params)
     addressData = response.json()
-    return addressData["addresses"][0]["text"]
+    try:
+    	return addressData["addresses"][0]["text"]
+    except:
+    	return False
 
 
 def findClosestPSAP(location):
+	if location == False:
+		return False
     try:
         latLong = geocode(location).split(",")
     except:
-        return "Bad location."
+        return False
         
     myLat = float(latLong[0].strip())
     myLong = float(latLong[1].strip())
@@ -133,4 +148,9 @@ def findClosestPSAP(location):
     
     return bestPSAP + "; " + PSAPAddress
 
+def locationFromIP(ip):    
+    url = "http://freegeoip.net/json/" + ip
+    response = requests.get(url)
+    locationData = response.json()
+    return locationData["city"] + ", " + locationData["region_name"] + ", " + locationData["zipcode"]
 
