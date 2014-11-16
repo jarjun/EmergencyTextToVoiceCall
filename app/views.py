@@ -41,7 +41,7 @@ def form():
 		#flash(form.address.data)
 		inputText = form.address.data
 		location = findClosestPSAP(inputText)
-		modifiedText = urllib.quote(inputText)
+		modifiedText = urllib.quote(location)
 		urlToMake = BASE_URL + "call/" + modifiedText
 		client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
 		return redirect("/submitted")
