@@ -20,12 +20,22 @@ auth_token  = "d96a5e6b2722cac3116e0298c965efd0"
 client = TwilioRestClient(account_sid, auth_token)
 BASE_URL = "https://emergencytexttovoice.herokuapp.com/"
 
+def makeCall(inputText, ip):
+	extractedAddress = extractAddress(inputText)
+	if extractedAddress != "No address":
+	 	location = findClosestPSAP(extractedAddress)
+	else:
+		location = findClosestPSAP(locationFromIP(ip))
+	modifiedText = urllib.quote("P S A P Location is. " + location + "." + "Your Message is. " + inputText)
+	urlToMake = BASE_URL + "call/" + modifiedText
+	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
+
 def makeCall(inputText):
 	extractedAddress = extractAddress(inputText)
 	if extractedAddress != "No address":
 	 	location = findClosestPSAP(extractedAddress)
 	else:
-		location = "No valid address was found"
+		location = "No valid address found"
 	modifiedText = urllib.quote("P S A P Location is. " + location + "." + "Your Message is. " + inputText)
 	urlToMake = BASE_URL + "call/" + modifiedText
 	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
@@ -42,10 +52,11 @@ def submitted():
 
 @app.route('/', methods=['GET', 'POST'])
 def form():
+	ip = request.remote_addr
 	form = RequestForm()
 	if form.validate_on_submit():
 		inputText = form.inputText.data
-		makeCall(inputText)
+		makeCall(inputText, ip)
 		return redirect("/submitted")
 	return render_template('request.html',
 							title= 'Request',
@@ -140,4 +151,9 @@ def findClosestPSAP(location):
     
     return bestPSAP + "; " + PSAPAddress
 
+def locationFromIP(ip):    
+    url = "http://freegeoip.net/json/" + ip
+    response = requests.get(url)
+    locationData = response.json()
+    return locationData["city"] + ", " + locationData["region_name"] + ", " + locationData["zipcode"]
 
