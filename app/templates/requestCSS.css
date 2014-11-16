@@ -1,0 +1,18 @@
+body{
+	background: url("http://www.webdesign.org/img_articles/20168/gradient.jpg");
+}
+
+h1{
+	color: red;
+}
+p, ul, li{
+	color: white;
+}
+#main{
+	position: relative;
+	left: 40%;
+}
+#sub{
+	width: 200px;
+	height: 100px;
+}
