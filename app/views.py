@@ -26,7 +26,7 @@ def makeCall(inputText, ip):
 	if extractedAddress != "No address":
 	 	location = findClosestPSAP(extractedAddress)
 	else:
-		location = findClosestPSAP(locationFromIP(ip))
+		location = "No valid address found"
 	modifiedText = urllib.quote("P S A P Location is. " + location + "." + "Your Message is. " + inputText)
 	urlToMake = BASE_URL + "call/" + modifiedText
 	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
@@ -53,8 +53,6 @@ def submitted():
 
 @app.route('/', methods=['GET', 'POST'])
 def form():
-	ip = urllib2.urlopen('http://ip.42.pl/raw').read()	
-	return ip
 	form = RequestForm()
 	if form.validate_on_submit():
 		inputText = form.inputText.data
