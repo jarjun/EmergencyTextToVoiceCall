@@ -12,10 +12,10 @@ BASE_URL = "https://emergencytexttovoice.herokuapp.com/"
 
 @app.route('/sms', methods=['GET', 'POST'])
 def default():
-	toGet = request.values.get('Body',None)
-	resp = twilio.twiml.Response()
-	client.calls.create(url = BASE_URL + "call/" + toGet , to="+17572823575", from_ = "+12039874014",body=toGet)
-	return str(resp)
+	inputText = request.values.get('Body',None)
+	urlToMake = BASE_URL + "call/" + inputText
+	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
+	return ""
 
 @app.route('/submitted', methods=['GET', 'POST'])
 def submitted():
