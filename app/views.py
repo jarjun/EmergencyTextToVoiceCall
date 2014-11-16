@@ -28,8 +28,10 @@ def form():
 	form = RequestForm()
 	if form.validate_on_submit():
 		#flash(form.address.data)
-		resp = twilio.twiml.Response()
-		client.messages.create(to="+17572823575", from_ = "+12039874014",body=form.address.data)
+		inputText = form.address.data
+		modifiedText = urllib.quote(inputText)
+		urlToMake = BASE_URL + "call/" + modifiedText
+		client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
 		return redirect("/submitted")
 	return render_template('request.html',
 							title= 'Request',
