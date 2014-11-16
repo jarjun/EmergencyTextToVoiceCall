@@ -1,0 +1,14 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Information</h1>
+  <form placeholder="Address" action="" method="post" name="address">
+      {{ form.hidden_tag() }}
+      <p>
+          Enter your address:<br>
+          {{ form.address(size=80) }}<br>
+      </p>
+      <p><input type="submit" value="Submit"></p>
+  </form>
+{% endblock %}
