@@ -13,8 +13,8 @@ client = TwilioRestClient(account_sid, auth_token)
 def default():
 	toGet = request.values.get('Body',None)
 	resp = twilio.twiml.Response()
-	message = client.messages.create(to="+17572823575", from_ = "+12039874014",body=toGet)
-	resp.message(message)
+	#message = client.messages.create(to="+17572823575", from_ = "+12039874014",body=toGet)
+	resp.say(toGet)
 	return str(resp)
 
 @app.route('/submitted', methods=['GET', 'POST'])
