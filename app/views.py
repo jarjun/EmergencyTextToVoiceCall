@@ -112,8 +112,8 @@ def extractAddress(message):
     return address
 
 def findClosestPSAP(location):
-	# if location == "No address":
-	# 	return "No address"
+	if location == "No address":
+		return "No address"
     try:
         latLong = geocode(location).split(",")
     except:
