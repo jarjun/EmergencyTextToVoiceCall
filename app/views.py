@@ -29,7 +29,7 @@ def makeCall(inputText):
 		return "No valid address found"
 	modifiedText = urllib.quote("P S A P Location is. " + location + "." + "Your Message is. " + inputText)
 	urlToMake = BASE_URL + "call/" + modifiedText
-	number = determineToCall(location.split()[0]).strip()
+	number = determineToCall(location.split(";")[0]).strip()
 	client.calls.create(url = urlToMake , to=number, from_ = "+12039874014")
 
 @app.route('/sms', methods=['GET', 'POST'])
