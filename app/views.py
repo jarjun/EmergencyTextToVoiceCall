@@ -21,7 +21,7 @@ client = TwilioRestClient(account_sid, auth_token)
 BASE_URL = "https://emergencytexttovoice.herokuapp.com/"
 
 def makeCall(inputText):
-	extractedAddress = extractAddress(inputText)
+	#extractedAddress = extractAddress(inputText)
 	# if extractedAddress != "No address":
 	# 	location = findClosestPSAP(extractedAddress)
 	# else:
