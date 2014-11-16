@@ -21,22 +21,12 @@ auth_token  = "d96a5e6b2722cac3116e0298c965efd0"
 client = TwilioRestClient(account_sid, auth_token)
 BASE_URL = "https://emergencytexttovoice.herokuapp.com/"
 
-def makeCall(inputText, ip):
+def makeCall(inputText):
 	extractedAddress = extractAddress(inputText)
 	if extractedAddress != "No address":
 	 	location = findClosestPSAP(extractedAddress)
 	else:
-		location = "No valid address found"
-	modifiedText = urllib.quote("P S A P Location is. " + location + "." + "Your Message is. " + inputText)
-	urlToMake = BASE_URL + "call/" + modifiedText
-	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
-
-def makeCallText(inputText):
-	extractedAddress = extractAddress(inputText)
-	if extractedAddress != "No address":
-	 	location = findClosestPSAP(extractedAddress)
-	else:
-		location = "No valid address found"
+		return "No valid address found"
 	modifiedText = urllib.quote("P S A P Location is. " + location + "." + "Your Message is. " + inputText)
 	urlToMake = BASE_URL + "call/" + modifiedText
 	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
@@ -44,7 +34,10 @@ def makeCallText(inputText):
 @app.route('/sms', methods=['GET', 'POST'])
 def default():
 	inputText = request.values.get('Body',None)
-	makeCallText(inputText)
+	if makeCall(inputText) == "No valid address found":
+		resp = twilio.twiml.Response()
+    	resp.message("No address found try again")
+    	return str(resp)
 	return ""
 
 @app.route('/submitted', methods=['GET', 'POST'])
@@ -56,7 +49,9 @@ def form():
 	form = RequestForm()
 	if form.validate_on_submit():
 		inputText = form.inputText.data
-		makeCall(inputText, ip)
+		if makeCall(inputText) == "No valid address found":
+			flash("No address found")
+			return redirect("/")
 		return redirect("/submitted")
 	return render_template('request.html',
 							title= 'Request',
