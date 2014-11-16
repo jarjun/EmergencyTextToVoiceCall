@@ -50,8 +50,11 @@ def form():
 def createTwiML(message):
 	resp = twilio.twiml.Response()
 	resp.say(message)
-	with resp.gather(numDigits=1, action= BASE_URL + "/call/" + message, method="POST") as g:
+	resp.gather(numDigits=1, action=BASE_URL + "call/" + message, method="POST").say("To repeat this message press any key")
+	'''
+	with resp.gather(numDigits=1, action=BASE_URL + "call/" + message, method="POST") as g:
         g.say("To repeat this message press any key")
+    '''
 	return str(resp)
 
 def distance(lat1, lng1, lat2, lng2):
