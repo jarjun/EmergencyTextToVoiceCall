@@ -17,6 +17,10 @@ def default():
 	resp.message(message)
 	return str(resp)
 
+@app.route('/submitted', methods=['GET', 'POST'])
+def submitted():
+	return render_template('submitted.html')
+
 @app.route('/', methods=['GET', 'POST'])
 def form():
 	form = RequestForm()
@@ -24,6 +28,7 @@ def form():
 		#flash(form.address.data)
 		resp = twilio.twiml.Response()
 		client.messages.create(to="+17572823575", from_ = "+12039874014",body=form.address.data)
+		return redirect("/submitted")
 	return render_template('request.html',
 							title= 'Request',
 							form= form)
