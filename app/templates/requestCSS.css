@@ -1,5 +1,11 @@
 body{
 	background: url("http://www.webdesign.org/img_articles/20168/gradient.jpg");
+
+}
+
+html, body{
+	max-width: 100%;
+	overflow-x: hidden;
 }
 
 h1{
@@ -15,4 +21,10 @@ p, ul, li{
 #sub{
 	width: 200px;
 	height: 100px;
+}
+a{
+	color: #FF9933;
+}
+a:hover{
+	color: #66FF33;
 }
