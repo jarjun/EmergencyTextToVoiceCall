@@ -24,8 +24,8 @@ BASE_URL = "https://emergencytexttovoice.herokuapp.com/"
 @app.route('/sms', methods=['GET', 'POST'])
 def default():
 	inputText = request.values.get('Body',None)
-	location = findClosestPSAP(inputText)
-	modifiedText = urllib.quote(location)
+	location = extractAddress(findClosestPSAP(inputText))
+	modifiedText = urllib.quote("PSAP Location is " + location + "Your Message is " + inputText)
 	urlToMake = BASE_URL + "call/" + modifiedText
 	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
 	return ""
@@ -40,8 +40,8 @@ def form():
 	if form.validate_on_submit():
 		#flash(form.address.data)
 		inputText = form.address.data
-		location = findClosestPSAP(inputText)
-		modifiedText = urllib.quote(location)
+		location = extractAddress(findClosestPSAP(inputText))
+		modifiedText = urllib.quote("PSAP Location is " + location + "Your Message is " + inputText)
 		urlToMake = BASE_URL + "call/" + modifiedText
 		client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
 		return redirect("/submitted")
@@ -105,7 +105,7 @@ def extractAddress(message):
     
     response = requests.get(url, params = query_params)
     addressData = response.json()
-    #print addressData
+    return addressData["addresses"][0]["text"]
 
 
 def findClosestPSAP(location):
