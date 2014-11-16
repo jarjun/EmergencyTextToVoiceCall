@@ -3,4 +3,7 @@ from wtforms import StringField, BooleanField
 from wtforms.validators import DataRequired
 
 class RequestForm(Form):
-	address = StringField('address', validators=[DataRequired()])
+	street = StringField('street', description = "Street", validators=[DataRequired()])
+	state = StringField('state', description = "State", validators=[DataRequired()])
+	zipCode = StringField('zipCode', description = "Zip Code", validators=[DataRequired()])
+	desc = StringField('desc', description = "Situacion", validators=[DataRequired()])
