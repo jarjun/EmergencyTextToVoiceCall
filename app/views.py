@@ -24,7 +24,8 @@ BASE_URL = "https://emergencytexttovoice.herokuapp.com/"
 @app.route('/sms', methods=['GET', 'POST'])
 def default():
 	inputText = request.values.get('Body',None)
-	modifiedText = urllib.quote(inputText)
+	location = findClosestPSAP(inputText)
+	modifiedText = urllib.quote(location)
 	urlToMake = BASE_URL + "call/" + modifiedText
 	client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
 	return ""
@@ -39,6 +40,7 @@ def form():
 	if form.validate_on_submit():
 		#flash(form.address.data)
 		inputText = form.address.data
+		location = findClosestPSAP(inputText)
 		modifiedText = urllib.quote(inputText)
 		urlToMake = BASE_URL + "call/" + modifiedText
 		client.calls.create(url = urlToMake , to="+17572823575", from_ = "+12039874014")
